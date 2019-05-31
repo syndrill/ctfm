@@ -1,0 +1,6 @@
+{
+  "name": "pwn-1",
+  "category": "pwn",
+  "info": "<p>Data: <a href=\"https://foo.bar/chal1.zip\">chal1.zip</a></p>\n<p>Host: 666.666.666.666</p>\n<p>Port: 31337</p>\n<br>\n<p>Hello world.</p>",
+  "flag": "flag{test}"
+}

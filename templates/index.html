@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<h2>codepwnda CTF</h2>
+<p>
+  Annual CTF targeted for entry level that-soon-to-be-infosec-folks,
+  held by Cyber Security IPB competitive branch <i>codepwnda</i>.
+</p>
+
+<h2>CTF WTF</h2>
+<p>
+  what?<br>
+<p>
+
+<h2>Rules</h2>
+<ul>
+  <li>plz hax but, DOSsing is forbidden.<br></li>
+  <li>bugs? question?</li>
+  <ul>
+    <li><a href="mailto:test@gmail.com">test@gmail.com</a><br></li>
+    <li>line: ???</li>
+  </ul>
+</ul>
+
+<form method="post" action="/"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}" /></form>
+{% endblock %}
