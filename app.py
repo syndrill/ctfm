@@ -34,6 +34,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = '0000000000000000000000000'
 app.config["SECURITY_PASSWORD_SALT"] = '0000000000000'
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite')
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 #app.config["PREFERRED_URL_SCHEME"] = 'https' #decomment for HTTPS
 CSRFProtect(app)
 
