@@ -17,6 +17,11 @@ python2 chals.py # build database
 python2 run.py # run
 ```
 
+## Screenies
+![home](/screenshot/home.png)
+![chall](/screenshot/chall.png)
+![score](/screenshot/score.png)
+
 ## Score policy
 - No first blood.
 - Dynamic Scoring, all the challenges start with the same points, more solves, fewer points.
