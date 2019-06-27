@@ -19,6 +19,7 @@ from wtforms.validators import Required, Length, EqualTo, Email
 from flask_wtf.csrf import CSRFProtect
 
 import datetime
+import requests
 import os
 import time
 
@@ -52,7 +53,8 @@ class User(UserMixin, db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(80))
+    nama = db.Column(db.String(80))
+    nim = db.Column(db.String(10))
     password_hash = db.Column(db.String(120))
     solved = db.Column(db.String(400))
     lastSubmit = db.Column(db.DateTime)
@@ -114,6 +116,7 @@ class ChallengeForm(FlaskForm):
     flag = StringField('The Flag', validators=[Required(), Length(1, 64)])
     submit = SubmitField('Send')
 
+'''
 class RegistrationForm(FlaskForm):
     login = StringField('Username', validators=[Required()])
     email = StringField('Email', validators=[Required(), Email()])
@@ -121,6 +124,7 @@ class RegistrationForm(FlaskForm):
     password_again = PasswordField('Password again',
                                    validators=[Required(), EqualTo('password')])
     submit = SubmitField('Register')
+'''
 
 ################################
 ##########  ROUTES   ###########
@@ -181,6 +185,17 @@ def challenge(challenge_name):
     return render_template('challenge.html',form=form, challenge=challenge )
 
 # TODO: Integrasi IPB SSO
+def get_user_from_ipb_sso(user, pwd):
+    r = requests.post('http://api.ipb.ac.id/v1/Authentication/LoginMahasiswa',
+            headers={'X-IPBAPI-Token': 'Bearer 6454b1ff-7dce-396d-9b07-4f88248072b6'},
+            json={'userName': user, 'password': pwd})
+    res = r.json()
+    if res.has_key('Error'):
+        return None
+    else:
+        return res
+
+'''
 @app.route('/register', methods=['GET','POST'])
 def register():
     if current_user.is_authenticated:
@@ -200,6 +215,7 @@ def register():
         return redirect(url_for('index'))
     
     return render_template('register.html', form=form)
+'''
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -210,8 +226,17 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.login.data).first()
         if user is None or not user.verify_password(form.password.data):
-            return 'Invalid username or password'
-         
+            q = get_user_from_ipb_sso(form.login.data, form.password.data)
+            if q == None:
+                return 'Invalid username or password'
+            else:
+                user = User(username=form.login.data,
+                            password=form.password.data,
+                            nama=q['Nama'],
+                            nim=q['NIM'],
+                            solved='')
+                db.session.add(user)
+                db.session.commit()
         login_user(user)
         return redirect(url_for('index'))
     

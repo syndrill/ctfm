@@ -9,4 +9,4 @@ flask-admin
 flask_security
 enum
 tornado
-psycopg2
+requests
